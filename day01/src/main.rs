@@ -19,5 +19,20 @@ fn main() {
         }
     };
 
-    println!("{}", puzzle_input);
+    let spl: Vec<&str> = puzzle_input
+        .trim()
+        .split("\n")
+        .collect();
+
+    let mut calories_list: Vec<i32> = Vec::new();
+    for s in spl {
+        if s != "" {
+            let calories: i32 = s.parse().unwrap();
+            calories_list.push(calories);
+        }
+    }
+
+    for c in calories_list {
+        println!("Parsed {c} into i32");
+    }
 }
