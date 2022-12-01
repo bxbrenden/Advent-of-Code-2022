@@ -5,4 +5,4 @@ Rust is a language I've only toyed with in the past and haven't really used for 
 Since the Advent is already hard and defeats me after 6-10 days, this year will be even harder.
 
 # Progress
-- [ ] Day 01
+- [x] Day 01 ⭐⭐
