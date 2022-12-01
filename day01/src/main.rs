@@ -33,5 +33,7 @@ fn main() {
         }
         calorie_sums.push(sum);
     }
-    println!("{:?}", calorie_sums);
+
+    let answer: i32 = *calorie_sums.iter().max().unwrap();
+    println!("{}", answer);
 }
