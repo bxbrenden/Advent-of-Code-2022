@@ -34,6 +34,12 @@ fn main() {
         calorie_sums.push(sum);
     }
 
-    let answer: i32 = *calorie_sums.iter().max().unwrap();
-    println!("{}", answer);
+    let answer1: i32 = *calorie_sums.iter().max().unwrap();
+    println!("{}", answer1);
+
+    calorie_sums.sort();
+    calorie_sums.reverse();
+    let top_three: Vec<i32> = calorie_sums[..3].to_vec();
+    let answer2: i32 = top_three.iter().sum::<i32>();
+    println!("{}", answer2);
 }
