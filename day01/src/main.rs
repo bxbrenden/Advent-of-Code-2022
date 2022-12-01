@@ -1,5 +1,6 @@
 use std::env;
 use std::fs;
+use std::process;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -10,6 +11,13 @@ fn main() {
     };
     println!("The input file is {}", input_file);
 
-    let puzzle_input = fs::read_to_string(input_file)
-        .expect("Unable to read puzzle input file {input_file}");
+    let puzzle_input = match fs::read_to_string(input_file) {
+        Ok(puz) => puz,
+        Err(e) => {
+            println!("Failed to read file with error:\n{e}");
+            process::exit(1);
+        }
+    };
+
+    println!("{}", puzzle_input);
 }
