@@ -19,20 +19,19 @@ fn main() {
         }
     };
 
-    let spl: Vec<&str> = puzzle_input
-        .trim()
-        .split("\n")
-        .collect();
+    // Break into groups separated by blank lines.
+    // Each group is one elf's calories
+    let spl1: Vec<&str> = puzzle_input.trim().split("\n\n").collect();
 
-    let mut calories_list: Vec<i32> = Vec::new();
-    for s in spl {
-        if s != "" {
-            let calories: i32 = s.parse().unwrap();
-            calories_list.push(calories);
+    let mut calorie_sums: Vec<i32> = Vec::new();
+    for s in spl1 {
+        let spl: Vec<&str> = s.trim().split("\n").collect();
+        let mut sum: i32 = 0;
+        for sp in spl {
+            let num: i32 = sp.parse().unwrap();
+            sum += num
         }
+        calorie_sums.push(sum);
     }
-
-    for c in calories_list {
-        println!("Parsed {c} into i32");
-    }
+    println!("{:?}", calorie_sums);
 }
