@@ -24,7 +24,7 @@ fn read_strategy_guide(guide: &str) -> RPS {
     RPS { opponent: opponent, mine: mine }
 }
 
-fn resolve_rps(rps: RPS) -> u32 {
+fn resolve_rps(rps: &RPS) -> u32 {
     // loss = 0, draw = 3, win = 6
     // rock = 1, paper = 2, scissors = 3
     let mut points: u32 = 0;
@@ -46,6 +46,29 @@ fn resolve_rps(rps: RPS) -> u32 {
     points
 }
 
+fn resolve_rps_two(rps: &RPS) -> u32 {
+    // loss = 0, draw = 3, win = 6
+    // rock = 1, paper = 2, scissors = 3
+    // A = rock, B = paper, C = scissors
+    // X = lose, Y = draw, Z = win
+    let mut points: u32 = 0;
+    let zipped = rps.opponent.iter().zip(rps.mine.iter());
+    for z in zipped {
+        match z {
+            ('A', 'X') => points += 3,
+            ('A', 'Y') => points += 4,
+            ('A', 'Z') => points += 8,
+            ('B', 'X') => points += 1,
+            ('B', 'Y') => points += 5,
+            ('B', 'Z') => points += 9,
+            ('C', 'X') => points += 2,
+            ('C', 'Y') => points += 6,
+            ('C', 'Z') => points += 7,
+            _ => println!("{:?} was not a match for any pattern", z),
+        }
+    }
+    points
+}
 fn main() {
     let args: Vec<String> = env::args().collect();
     let file_path = match args.len() {
@@ -58,6 +81,8 @@ fn main() {
 
     let my_rps = read_strategy_guide(&contents);
     // println!("{:?}", my_rps);
-    let points = resolve_rps(my_rps);
-    println!("Total points: {}", points);
+    let points = resolve_rps(&my_rps);
+    println!("Total points for part one: {}", points);
+    let points2 = resolve_rps_two(&my_rps);
+    println!("Total points for part two: {}", points2);
 }
