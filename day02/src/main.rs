@@ -24,10 +24,10 @@ fn read_strategy_guide(guide: &str) -> RPS {
     RPS { opponent: opponent, mine: mine }
 }
 
-fn resolve_rps(rps: RPS) -> u8 {
+fn resolve_rps(rps: RPS) -> u32 {
     // loss = 0, draw = 3, win = 6
     // rock = 1, paper = 2, scissors = 3
-    let mut points: u8 = 0;
+    let mut points: u32 = 0;
     let zipped = rps.opponent.iter().zip(rps.mine.iter());
     for z in zipped {
         match z {
