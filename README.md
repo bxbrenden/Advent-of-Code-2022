@@ -6,3 +6,4 @@ Since the Advent is already hard and defeats me after 6-10 days, this year will 
 
 # Progress
 - [x] Day 01 ⭐⭐
+- [x] Day 02 ⭐⭐
