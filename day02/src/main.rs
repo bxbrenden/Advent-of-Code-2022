@@ -5,8 +5,8 @@ use std::process;
 #[derive(Debug)]
 struct RPS {
     // A struct for holding Rock, Paper, Scissors moves
-    opponent_moves: Vec<char>,
-    my_moves: Vec<char>,
+    opponent: Vec<char>,
+    mine: Vec<char>,
 }
 
 fn read_strategy_guide(guide: &str) -> RPS {
@@ -21,7 +21,29 @@ fn read_strategy_guide(guide: &str) -> RPS {
         mine.push(my);
     }
 
-    RPS { opponent_moves: opponent, my_moves: mine }
+    RPS { opponent: opponent, mine: mine }
+}
+
+fn resolve_rps(rps: RPS) -> u8 {
+    // loss = 0, draw = 3, win = 6
+    // rock = 1, paper = 2, scissors = 3
+    let mut points: u8 = 0;
+    let zipped = rps.opponent.iter().zip(rps.mine.iter());
+    for z in zipped {
+        match z {
+            ('A', 'X') => points += 4,
+            ('A', 'Y') => points += 8,
+            ('A', 'Z') => points += 3,
+            ('B', 'X') => points += 1,
+            ('B', 'Y') => points += 5,
+            ('B', 'Z') => points += 9,
+            ('C', 'X') => points += 7,
+            ('C', 'Y') => points += 2,
+            ('C', 'Z') => points += 6,
+            _ => println!("{:?} was not a match for any pattern", z),
+        }
+    }
+    points
 }
 
 fn main() {
@@ -35,5 +57,7 @@ fn main() {
         .expect("Could not read file contents");
 
     let my_rps = read_strategy_guide(&contents);
-    println!("{:?}", my_rps);
+    // println!("{:?}", my_rps);
+    let points = resolve_rps(my_rps);
+    println!("Total points: {}", points);
 }
