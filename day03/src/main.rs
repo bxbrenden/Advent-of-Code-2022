@@ -1,6 +1,5 @@
 use std::env;
 use std::fs;
-use itertools::Itertools;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
@@ -16,11 +15,11 @@ fn read_puzzle_input() -> String {
     contents
 }
 
-fn find_triples(s: &String) -> Vec<u32> {
+fn find_triples(s: &String) -> Vec<usize> {
     let chars = s.chars();
-    let mut index: u32 = 0;
-    let mut count: u32 = 0;
-    let mut triples: Vec<u32> = Vec::new();
+    let mut index: usize = 0;
+    let mut count: usize = 0;
+    let mut triples: Vec<usize> = Vec::new();
     for c in chars {
         if c == '\n' {
             count += 1;
@@ -97,5 +96,12 @@ fn main() {
     println!("{:?}", errors.iter().sum::<u32>());
     let triples = find_triples(&contents);
     println!("{:?}", triples);
-    println!("{}", &contents[..57]);
+    for (i, t) in triples.iter().enumerate() {
+        match i {
+            0 => println!("{:?}", &contents[..triples[i]]),
+            _ => {
+                println!("{:?}", &contents[triples[i-1]..triples[i]]);
+            }
+        }
+    }
 }
