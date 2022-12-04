@@ -16,19 +16,24 @@ fn read_puzzle_input() -> String {
     contents
 }
 
-fn index_of_newline(s: String) -> u32 {
+fn find_triples(s: &String) -> Vec<u32> {
     let chars = s.chars();
     let mut index: u32 = 0;
+    let mut count: u32 = 0;
+    let mut triples: Vec<u32> = Vec::new();
     for c in chars {
-        index += 1;
         if c == '\n' {
-            break
+            count += 1;
+            if count % 3 == 0 && count != 0 {
+                triples.push(index)
+            }
         }
+        index += 1;
     }
-    index
+    triples
 }
 
-fn find_badges(puzzle_input: String) {
+fn find_badges(puzzle_input: &String) {
     let mut priorities: HashMap<char, u32> = HashMap::new();
     let alphabet: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         .chars()
@@ -39,28 +44,10 @@ fn find_badges(puzzle_input: String) {
         priorities.insert(*letter, index.try_into().unwrap());
     }
 
-    let mut stream: Vec<char> = Vec::new();
-    let mut count = 0;
-    let chars = puzzle_input.trim().chars();
-    for c in chars {
-        match c {
-            '\n' => {
-                match count {
-                    0|1 => {
-                        count += 1;
-                        continue
-                    },
-                    2 => break,
-                    _ => (),
-                }
-            },
-            _ => stream.push(c),
-        }
-    }
-    println!("{:?}", stream);
+    let mut stream: Vec<&str> = Vec::new();
 }
 
-fn find_common_elements(puzzle_input: String) -> Vec<u32> {
+fn find_common_elements(puzzle_input: &String) -> Vec<u32> {
     let mut priorities: HashMap<char, u32> = HashMap::new();
     let alphabet: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         .chars()
@@ -106,7 +93,9 @@ fn main() {
     let contents = read_puzzle_input();
     println!("{}", contents);
 
-    // let errors = find_common_elements(contents);
-    // println!("{:?}", errors.iter().sum::<u32>());
-    find_badges(contents);
+    let errors = find_common_elements(&contents);
+    println!("{:?}", errors.iter().sum::<u32>());
+    let triples = find_triples(&contents);
+    println!("{:?}", triples);
+    println!("{}", &contents[..57]);
 }
