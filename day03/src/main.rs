@@ -46,6 +46,62 @@ fn find_badges(puzzle_input: &String) {
     let mut stream: Vec<&str> = Vec::new();
 }
 
+fn part2_answer(puzzle_input: &String, indices: Vec<usize>) -> () {
+    let mut chunks: Vec<&str> = Vec::new();
+    for (i, t) in indices.iter().enumerate() {
+        match i {
+            0 => {
+                chunks.push(&puzzle_input[..indices[i]]);
+            }
+            _ => {
+                chunks.push(&puzzle_input[indices[i-1]..indices[i]]);
+            }
+        }
+    }
+    println!("{:?}", chunks);
+
+    for chunk in chunks {
+        println!("Starting chunk: {chunk}");
+        let mut lines: Vec<&str> = Vec::new();
+        for line in chunk.trim().split("\n") {
+            lines.push(line);
+        }
+        let mut h1: HashSet<char> = HashSet::new();
+        let mut h2: HashSet<char> = HashSet::new();
+        let mut h3: HashSet<char> = HashSet::new();
+        // Have to make a 4th HashSet for the result of
+        // intersection h1 and h2. Rust's HashSets suck:
+        // https://github.com/rust-lang/rfcs/issues/2023
+        let mut h4: HashSet<char> = HashSet::new();
+
+        for c in lines[0].chars() {
+            h1.insert(c);
+        }
+        println!("h1 contains: {:?}", h1);
+
+        for c in lines[1].chars() {
+            h2.insert(c);
+        }
+        println!("h2 contains: {:?}", h2);
+
+        for c in lines[2].chars() {
+            h3.insert(c);
+        }
+        println!("h3 contains: {:?}", h3);
+
+        let h1h2 = h1.intersection(&h2);
+        for c in h1h2 {
+            h4.insert(*c);
+        }
+        println!("h4 contains: {:?}", h4);
+
+        let h3h4 = h3.intersection(&h4);
+        for entry in h3h4 {
+            println!("{}", entry);
+        }
+    }
+}
+
 fn find_common_elements(puzzle_input: &String) -> Vec<u32> {
     let mut priorities: HashMap<char, u32> = HashMap::new();
     let alphabet: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -96,12 +152,5 @@ fn main() {
     println!("{:?}", errors.iter().sum::<u32>());
     let triples = find_triples(&contents);
     println!("{:?}", triples);
-    for (i, t) in triples.iter().enumerate() {
-        match i {
-            0 => println!("{:?}", &contents[..triples[i]]),
-            _ => {
-                println!("{:?}", &contents[triples[i-1]..triples[i]]);
-            }
-        }
-    }
+    part2_answer(&contents, triples);
 }
