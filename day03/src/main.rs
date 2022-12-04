@@ -1,5 +1,6 @@
 use std::env;
 use std::fs;
+use itertools::Itertools;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
@@ -13,6 +14,24 @@ fn read_puzzle_input() -> String {
     let contents = fs::read_to_string(file_path)
         .expect("Failed to read input file {file_path}");
     contents
+}
+
+fn find_badges(puzzle_input: String) {
+    let mut priorities: HashMap<char, u32> = HashMap::new();
+    let alphabet: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        .chars()
+        .collect();
+
+    for (mut index, letter) in alphabet.iter().enumerate() {
+        index += 1;
+        priorities.insert(*letter, index.try_into().unwrap());
+    }
+
+    let lines = puzzle_input.trim().split("\n");
+
+    for (i, line) in lines.collect::<Vec<&str>>().iter().enumerate() {
+         println!("{}: {}", i, line);
+    }
 }
 
 fn find_common_elements(puzzle_input: String) -> Vec<u32> {
@@ -63,4 +82,5 @@ fn main() {
 
     let errors = find_common_elements(contents);
     println!("{:?}", errors.iter().sum::<u32>());
+    // find_badges(contents);
 }
