@@ -29,7 +29,8 @@ fn get_bounds(puz: &String) -> Vec<i32> {
     bounds
 }
 
-fn find_overlaps(bounds: Vec<i32>) -> () {
+fn find_overlaps(bounds: Vec<i32>) -> i32 {
+    let mut winners: i32 = 0;
     let chunks = bounds.chunks(4);
     for (index, chunk) in chunks.enumerate() {
         println!(
@@ -37,7 +38,7 @@ fn find_overlaps(bounds: Vec<i32>) -> () {
             index + 1,
             &chunk[0..2],
             &chunk[2..]
-        );
+            );
         // No overlaps if first upper bound is lower than second lower bound
         if chunk[1] < chunk[2] {
             println!("No overlap!");
@@ -45,20 +46,29 @@ fn find_overlaps(bounds: Vec<i32>) -> () {
         }
         // Full overlap if perfectly equal upper and lower bounds
         else if chunk[0] == chunk[2] && chunk[1] == chunk[3] {
-            println!("Perfect overlap!");
+            println!("We got a winner");
+            winners += 1;
         } // Overlap if lower bounds same and second upper higher than first upper
-          else if chunk[0] == chunk[2] && chunk[1] < chunk[3] {
+        else if chunk[0] == chunk[2] && (chunk[1] < chunk[3] || chunk[1] > chunk[3]) {
             println!("Overlap!");
         } // Partial overlap if first upper bound higher than second lower bound
-          else if chunk[2] < chunk[3] {
+        else if chunk[1] < chunk[3] {
             println!("Partial overlap!");
-          }
+        } else if chunk[0] < chunk[2] && chunk[1] > chunk[3] {
+            println!("We got a winner");
+            winners += 1;
+        } else if chunk[0] > chunk[2] && chunk[1] == chunk[3] {
+            println!("We got a winner");
+            winners += 1;
+        }
     }
+    winners
 }
 
 fn main() {
     let puz = read_puzzle_input();
     let bounds = get_bounds(&puz);
     // println!("{:?}", bounds);
-    find_overlaps(bounds);
+    let winners = find_overlaps(bounds);
+    println!("Found {winners} winners");
 }
