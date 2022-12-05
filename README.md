@@ -8,3 +8,4 @@ Since the Advent is already hard and defeats me after 6-10 days, this year will 
 - [x] Day 01 ⭐⭐
 - [x] Day 02 ⭐⭐
 - [x] Day 03 ⭐⭐
+- [x] Day 04 ⭐
