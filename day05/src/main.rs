@@ -15,7 +15,21 @@ fn read_puzzle_input() -> String{
     puzzle_input
 }
 
+fn create_crates(puz: &String) -> () {
+    let spl = puz.trim().split("\n\n");
+    // println!("{:?}", spl);
+
+    let chunks: Vec<&str> = spl.collect();
+    let crate_chunk = chunks[0];
+    println!("Crate Chunk:\n{crate_chunk}");
+
+    let cspl: Vec<&str> = crate_chunk.trim().split("\n").collect();
+    let crate_nums = cspl[cspl.len() -1];
+    println!("Crate nums: {:?}", crate_nums.trim().split_whitespace().collect::<Vec<&str>>());
+}
+
 fn main() {
     let puz = read_puzzle_input();
-    println!("{}", puz);
+    // println!("{}", puz);
+    create_crates(&puz);
 }
