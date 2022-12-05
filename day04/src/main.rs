@@ -31,17 +31,28 @@ fn get_bounds(puz: &String) -> Vec<i32> {
 
 fn find_overlaps(bounds: Vec<i32>) -> () {
     let chunks = bounds.chunks(4);
-    for chunk in chunks {
-        println!("Chunk 1: {:?}, Chunk 2: {:?}", &chunk[0..2], &chunk[2..]);
+    for (index, chunk) in chunks.enumerate() {
+        println!(
+            "Line: {}, Chunk 1: {:?}, Chunk 2: {:?}",
+            index + 1,
+            &chunk[0..2],
+            &chunk[2..]
+        );
         // No overlaps if first upper bound is lower than second lower bound
         if chunk[1] < chunk[2] {
             println!("No overlap!");
             continue;
-        } else if chunk[0] == chunk[2] && chunk[1] == chunk[3] {
-            println!("Perfect overlap!");
-        } else if chunk[0] == chunk[2] && chunk[1] < chunk[3] {
-            println!("Overlap!");
         }
+        // Full overlap if perfectly equal upper and lower bounds
+        else if chunk[0] == chunk[2] && chunk[1] == chunk[3] {
+            println!("Perfect overlap!");
+        } // Overlap if lower bounds same and second upper higher than first upper
+          else if chunk[0] == chunk[2] && chunk[1] < chunk[3] {
+            println!("Overlap!");
+        } // Partial overlap if first upper bound higher than second lower bound
+          else if chunk[2] < chunk[3] {
+            println!("Partial overlap!");
+          }
     }
 }
 
