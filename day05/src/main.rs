@@ -1,7 +1,7 @@
 use std::env;
 use std::fs;
 
-fn read_puzzle_input() -> String{
+fn read_puzzle_input() -> String {
     let args: Vec<String> = env::args().collect();
     let file_path = match args.len() {
         1 => "sample_input.txt",
@@ -9,8 +9,8 @@ fn read_puzzle_input() -> String{
         _ => "sample_input.txt",
     };
 
-    let puzzle_input = fs::read_to_string(file_path)
-        .expect("Failed to read input file \"{file_path}\"");
+    let puzzle_input =
+        fs::read_to_string(file_path).expect("Failed to read input file \"{file_path}\"");
 
     puzzle_input
 }
@@ -24,8 +24,13 @@ fn create_crates(puz: &String) -> () {
     println!("Crate Chunk:\n{crate_chunk}");
 
     let cspl: Vec<&str> = crate_chunk.trim().split("\n").collect();
-    let crate_nums = cspl[cspl.len() -1];
-    println!("Crate nums: {:?}", crate_nums.trim().split_whitespace().collect::<Vec<&str>>());
+    let crate_nums: Vec<&str> = cspl[cspl.len() - 1].trim().split_whitespace().collect();
+    println!("Crate nums: {:?}", crate_nums);
+
+    let crates = &cspl[0..cspl.len() -1];
+    for crate_row in crates {
+        println!("{:?}", crate_row);
+    }
 }
 
 fn main() {
