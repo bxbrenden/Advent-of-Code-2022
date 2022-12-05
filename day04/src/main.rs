@@ -49,15 +49,17 @@ fn find_overlaps(bounds: Vec<i32>) -> i32 {
             println!("We got a winner");
             winners += 1;
         } // Overlap if lower bounds same and second upper higher than first upper
-        else if chunk[0] == chunk[2] && (chunk[1] < chunk[3] || chunk[1] > chunk[3]) {
-            println!("Overlap!");
+        else if chunk[0] == chunk[2] && chunk[1] != chunk[3] {
+            println!("We got a winner");
+            winners += 1;
         } // Partial overlap if first upper bound higher than second lower bound
-        else if chunk[1] < chunk[3] {
-            println!("Partial overlap!");
+        else if chunk[0] != chunk[2] && chunk[1] == chunk[3] {
+            println!("We got a winner");
+            winners += 1;
         } else if chunk[0] < chunk[2] && chunk[1] > chunk[3] {
             println!("We got a winner");
             winners += 1;
-        } else if chunk[0] > chunk[2] && chunk[1] == chunk[3] {
+        } else if chunk[0] > chunk[2] && chunk[1] < chunk[3] {
             println!("We got a winner");
             winners += 1;
         }

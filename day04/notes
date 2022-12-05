@@ -1,0 +1,26 @@
+Case 1: perfect overlap
+- chunk[0] == chunk[2] && chunk[1] == chunk[3]
+
+Case 2: no overlap
+- chunk[1] < chunk[2]
+
+Case 3: Same lower bound, different upper bounds (WINNER)
+- chunk[0] == chunk[2] && chunk[1] != chunk[3]
+
+Case 4: Different lower bounds, same upper bounds (WINNER)
+- chunk[0] != chunk[2] && chunk[1] == chunk[3]
+
+Case 5: First lower less than second lower and first upper greater than second upper (WINNER)
+- chunk[0] < chunk[2] && chunk[1] > chunk[3]
+- 1-4,2-3
+1234.....
+.23......
+
+Case 6: First lower greater than second lower and first upper less than second upper
+- chunk[0] > chunk[2] && chunk[1] < chunk[3]
+- 3-5,2-6
+..345....
+.23456...
+
+Case 7: First lower greater than second lower and first upper less than second upper
+- 2-3,1-4
