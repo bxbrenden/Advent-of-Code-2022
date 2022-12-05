@@ -26,10 +26,12 @@ fn create_crates(puz: &String) -> () {
     let cspl: Vec<&str> = crate_chunk.trim().split("\n").collect();
     let crate_nums: Vec<&str> = cspl[cspl.len() - 1].trim().split_whitespace().collect();
     println!("Crate nums: {:?}", crate_nums);
+    let num_columns = crate_nums.len();
+    println!("Number of columns: {num_columns}");
 
     let crates = &cspl[0..cspl.len() -1];
-    for crate_row in crates {
-        println!("{:?}", crate_row);
+    for (index, crate_row) in crates.iter().enumerate() {
+        println!("{:?}", crate_row.replace("[", " ").replace("]"," "));
     }
 }
 
