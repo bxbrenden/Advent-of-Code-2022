@@ -1,3 +1,5 @@
+Part 1:
+-------
 Case 1: perfect overlap
 - chunk[0] == chunk[2] && chunk[1] == chunk[3]
 
@@ -24,3 +26,23 @@ Case 6: First lower greater than second lower and first upper less than second u
 
 Case 7: First lower greater than second lower and first upper less than second upper
 - 2-3,1-4
+
+Part 2:
+-------
+All the ways things can overlap:
+
+Case 1: Lower bounds equal, but upper bounds different
+Case 2: Upper bounds equal, but lower bounds different
+Case 3: Upper bounds equal and lower bounds equal
+Case 4: First upper bound greater than or equal to second lower bound AND
+        first lower bound less than or equal to second upper bound
+.2345.... \_ good
+....5678. /
+........9 \_ bad
+....567.. /
+Case 5: First lower bound less than or equal to second upper bound AND
+        first upper bound greater than or equal to second lower bound
+....5678. \_ good
+.2345.... /
+1........ \_ bad
+.234..... /
