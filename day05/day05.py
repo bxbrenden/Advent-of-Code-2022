@@ -4,7 +4,7 @@ from collections import deque
 
 def read_puzzle_input():
     if len(sys.argv) == 1 or len(sys.argv) > 2:
-        file_path = "sample_input.txt"
+        raise SystemExit("USAGE: python3 day05.py <PUZZLE_INPUT>")
     elif len(sys.argv) == 2:
         file_path = sys.argv[1]
     try:
@@ -37,6 +37,12 @@ def crates_to_deques(crates):
     col1 = deque()
     col2 = deque()
     col3 = deque()
+    col4 = deque()
+    col5 = deque()
+    col6 = deque()
+    col7 = deque()
+    col8 = deque()
+    col9 = deque()
 
     for row in rows:
         for i in range(1, len(row) + 1, 4):
@@ -49,14 +55,38 @@ def crates_to_deques(crates):
             elif i == 9:
                 if row[i] != ' ':
                     col3.append(row[i])
+            elif i == 13:
+                if row[i] != ' ':
+                    col4.append(row[i])
+            elif i == 17:
+                if row[i] != ' ':
+                    col5.append(row[i])
+            elif i == 21:
+                if row[i] != ' ':
+                    col6.append(row[i])
+            elif i == 25:
+                if row[i] != ' ':
+                    col7.append(row[i])
+            elif i == 29:
+                if row[i] != ' ':
+                    col8.append(row[i])
+            elif i == 33:
+                if row[i] != ' ':
+                    col9.append(row[i])
             else:
                 print(f"Unexpected column value: {i}")
 
     col1.reverse()
     col2.reverse()
     col3.reverse()
+    col4.reverse()
+    col5.reverse()
+    col6.reverse()
+    col7.reverse()
+    col8.reverse()
+    col9.reverse()
 
-    columns = [col1, col2, col3]
+    columns = [col1, col2, col3, col4, col5, col6, col7, col8, col9]
 
     return columns
 
@@ -96,7 +126,7 @@ def use_crane(crates, instructions):
     print(f"Initial state of crates:\n{crates}")
     for inst in instructions:
         num_crates, src, dst = process_inst(inst)
-        # print(f"Moving {num_crates} crates from column {src} to column {dst}")
+        # print(f"Moving {num_crates} crates from col. {src} to col. {dst}")
         # print(f"Inst: {inst}")
         print(crates)
         for n in range(num_crates):
