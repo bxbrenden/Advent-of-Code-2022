@@ -59,6 +59,18 @@ def crates_to_dataframe(crates):
     return columns
 
 
+def process_inst(inst):
+    """Given a string like "move 1 from 2 to 1", return... stuff..."""
+    spl = inst.split("from")
+    num_pops = int(spl[0].replace("move ", ""))
+
+    spl2 = spl[1].split(" to ")
+    src_col = int(spl2[0])
+    dst_col = int(spl2[1])
+
+    return (num_pops, src_col, dst_col)
+
+
 def main():
     puz = read_puzzle_input()
     # print(puz)
@@ -69,6 +81,9 @@ def main():
 
     for col in columns:
         print(col)
+
+    inst = "move 1 from 2 to 1"
+    print(process_inst(inst))
 
 
 if __name__ == "__main__":
