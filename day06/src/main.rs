@@ -18,14 +18,21 @@ fn read_puzzle_input() -> String{
 }
 
 fn find_sop_marker(puz: &String) -> () {
-    let seen: HashSet<&str> = HashSet::new();
-
     let len = &puz.len();
 
     for (i, c) in puz.chars().enumerate() {
+        let mut seen: HashSet<char> = HashSet::new();
+
         if i < len - 3 {
             let slice = &puz[i..i+4];
             println!("{}", slice);
+            for c in slice.chars() {
+                seen.insert(c);
+            }
+        }
+        if seen.len() == 4 {
+            println!("Index: {}", i + 4);
+            break;
         }
     }
 }
