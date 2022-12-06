@@ -34,6 +34,7 @@ def crates_to_dataframe(crates):
     [Z] [M] [P]
      1   2   3
     """
+    columns = []
     rows = crates.strip().split("\n")
     num_cols = len(rows[-1].strip().split())
     print(f"There are {num_cols} columns")
@@ -53,9 +54,9 @@ def crates_to_dataframe(crates):
             else:
                 print(f"Unexpected column value: {i}")
 
-    print(f"Column 1: {col1}")
-    print(f"Column 2: {col2}")
-    print(f"Column 3: {col3}")
+    columns.extend([col1, col2, col3])
+
+    return columns
 
 
 def main():
@@ -64,7 +65,10 @@ def main():
     crates, instructions = split_crates_and_instructions(puz)
     print(f"Crates:\n{crates}")
     print(f"Instructions:\n{instructions}")
-    crates_to_dataframe(crates)
+    columns = crates_to_dataframe(crates)
+
+    for col in columns:
+        print(col)
 
 
 if __name__ == "__main__":
