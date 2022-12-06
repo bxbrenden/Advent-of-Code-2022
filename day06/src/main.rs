@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::env;
 use std::fs;
 
@@ -9,13 +10,24 @@ fn read_puzzle_input() -> String{
         _ => "sample_input.txt",
     };
 
-    let puz = fs::read_to_string(file_path)
+    let mut puz = fs::read_to_string(file_path)
         .expect("Failed to open input file {file_path}");
 
+    puz = puz.trim().to_string();
     puz
+}
+
+fn find_sop_marker(puz: &String) -> () {
+    let seen: HashSet<&str> = HashSet::new();
+
+    for (i, c) in puz.chars().enumerate() {
+        println!("{}: {}", i, c);
+    }
 }
 
 fn main() {
     let puz = read_puzzle_input();
-    println!("{}", puz);
+    // println!("{}", puz);
+
+    find_sop_marker(&puz);
 }
