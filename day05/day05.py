@@ -129,6 +129,7 @@ def use_crane(crates, instructions):
         # print(f"Moving {num_crates} crates from col. {src} to col. {dst}")
         # print(f"Inst: {inst}")
         print(crates)
+        temp = []
         for n in range(num_crates):
             # print(f"popping from column {src}")
             try:
@@ -137,8 +138,11 @@ def use_crane(crates, instructions):
                 print("❌ Failed to pop from an empty deque")
                 continue
             # print(f"appending to column {dst}")
-            crates[dst].append(crate)
+            # crates[dst].append(crate)
             # print(crates)
+            temp.append(crate)
+        crates[dst].extend(reversed(temp))
+
     print(crates)
 
     return crates
