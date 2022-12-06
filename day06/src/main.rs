@@ -23,15 +23,15 @@ fn find_sop_marker(puz: &String) -> () {
     for (i, c) in puz.chars().enumerate() {
         let mut seen: HashSet<char> = HashSet::new();
 
-        if i < len - 3 {
-            let slice = &puz[i..i+4];
+        if i < len - 13 {
+            let slice = &puz[i..i+14];
             println!("{}", slice);
             for c in slice.chars() {
                 seen.insert(c);
             }
         }
-        if seen.len() == 4 {
-            println!("Index: {}", i + 4);
+        if seen.len() == 14 {
+            println!("Index: {}", i + 14);
             break;
         }
     }
