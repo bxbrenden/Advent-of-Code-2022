@@ -51,8 +51,11 @@ fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
     visible += outer_visible;
     // The product of grid dimensions minus (dims.0 -1 * dims.1 - 1)
     //   will always equal the visible outer trees
-    for (index, row) in tree_grid.iter().enumerate() {
-        println!("{}: {:?}", index, row);
+    for (index_x, row) in tree_grid.iter().enumerate() {
+        for (index_y, column) in row.iter().enumerate() {
+            println!("({index_x}, {index_y}): {column}");
+        }
+        // println!("{}: {:?}", index, row);
     }
 
     println!("Outer visible: {visible}");
