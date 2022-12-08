@@ -43,12 +43,12 @@ fn get_grid_dimensions(tree_grid: &Vec<Vec<u32>>) -> (usize, usize) {
     (height, width)
 }
 
-fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
+fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> usize {
     let mut visible: usize = 0;
     let grid_dims = get_grid_dimensions(tree_grid);
-    let inner_grid_size: usize = (grid_dims.0 - 2) * (grid_dims.1 - 2);
-    let outer_visible: usize = (grid_dims.0 * grid_dims.1) - inner_grid_size;
-    visible += outer_visible;
+    // let inner_grid_size: usize = (grid_dims.0 - 2) * (grid_dims.1 - 2);
+    // let outer_visible: usize = (grid_dims.0 * grid_dims.1) - inner_grid_size;
+    // visible += outer_visible;
     // The product of grid dimensions minus (dims.0 -1 * dims.1 - 1)
     //   will always equal the visible outer trees
     for (y, row) in tree_grid.iter().enumerate() {
@@ -56,17 +56,15 @@ fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
             println!("({y}, {x}): {column}");
             let viz = is_visible(&tree_grid, x, y);
             match viz.iter().any(|&b| b == true) {
-                true => println!("Visible!"),
+                true => {
+                    println!("Visible!");
+                    visible += 1;
+                },
                 false => println!("Not visible"),
             }
-            //match is_visible(&tree_grid, x, y) {
-            //     (true, true, true, true) => println!("Visible!"),
-            //     _ => (),
-            // }
         }
     }
-
-    println!("Outer visible: {visible}");
+    visible
 }
 
 fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> Vec<bool> {
@@ -138,5 +136,6 @@ fn main() {
 
     let tree_grid = get_tree_grid(puz);
 
-    find_visible_trees(&tree_grid);
+    let visible = find_visible_trees(&tree_grid);
+    println!("{} visible trees", visible);
 }
