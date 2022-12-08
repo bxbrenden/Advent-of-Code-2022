@@ -51,14 +51,34 @@ fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
     visible += outer_visible;
     // The product of grid dimensions minus (dims.0 -1 * dims.1 - 1)
     //   will always equal the visible outer trees
-    for (index_y, row) in tree_grid.iter().enumerate() {
-        for (index_x, column) in row.iter().enumerate() {
-            println!("({index_y}, {index_x}): {column}");
+    for (y, row) in tree_grid.iter().enumerate() {
+        for (x, column) in row.iter().enumerate() {
+            println!("({y}, {x}): {column}");
+            if is_visible(&tree_grid, x, y) {
+                println!("Visible!");
+            }
         }
         // println!("{}: {:?}", index, row);
     }
 
     println!("Outer visible: {visible}");
+}
+
+fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> bool {
+    let mut x = x_loc;
+    let mut y = y_loc;
+    // Check for top visibility by decrementing y values to 0
+    let mut top_highest: u32 = 0;
+    let cur_height = tree_grid[y_loc][x_loc];
+    while y > 0 {
+        y -= 1;
+        let test = tree_grid[y][x];
+        if test > top_highest {
+            top_highest = test;
+        }
+    }
+
+    cur_height > top_highest
 }
 
 fn main() {
