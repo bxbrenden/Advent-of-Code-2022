@@ -13,11 +13,12 @@ class Dir:
         else:
             self.files = []
         self.path = Path(path)
+        self.cwd = self.path
 
     def __repr__(self):
         child_names = [x for x in self.children.keys()]
         file_names = [x.split()[1] for x in self.files]
-        return f"Dir<{self.path.absolute()}, children: {child_names}, files: {file_names}>"
+        return f"Dir<{self.path.absolute()}, cwd: {self.cwd}, children: {child_names}, files: {file_names}>"
 
     def tree(self):
         num_slashes = str(self.path.absolute()).count("/")
@@ -49,6 +50,9 @@ class Dir:
         return size
 
 
+root_dir = Dir("/")
+
+
 def read_puzzle_input():
     """Read the puzzle input and return it as a string."""
     if len(sys.argv) == 1:
@@ -66,9 +70,10 @@ def read_puzzle_input():
         raise SystemExit(f"Failed to open file '{file_path}':\n{e}")
 
 
-def process_commands(iter_num, lines, direc, prev_direc=None):
+def process_commands(iter_num, lines, direc):
     """Process the Unix commands."""
-    print(f"Iteration: {iter_num}, direc: {direc}, prev_direc: {prev_direc}")
+    global root_dir
+    print(f"Iteration: {iter_num}, direc: {direc}, root_dir: {root_dir}")
     line = lines[0]
     # print(f"Current raw line: {line}")
     if line.startswith("$ cd"):
@@ -79,10 +84,27 @@ def process_commands(iter_num, lines, direc, prev_direc=None):
                 iter_num += 1
                 return process_commands(iter_num, lines[1:], direc)
         elif line == '$ cd ..':
-            if prev_direc is not None:
-                if len(lines) > 1:
-                    iter_num += 1
-                    return process_commands(iter_num, lines[1:], prev_direc, direc)
+            if len(lines) > 1:
+                iter_num += 1
+                direc.cwd = direc.cwd.parent.absolute()
+                # use direc.cwd to traverse the tree
+                path_list = str(direc.cwd).split("/")[1:]
+                new_direc_str = "root_dir.children["
+                pll = len(path_list)
+                for i, pl in enumerate(path_list):
+                    if pl == "":
+                        pl = "/"
+                    new_direc_str += "'" + pl + "'"
+                    if i < pll - 1:
+                        new_direc_str += "].children.["
+                    else:
+                        new_direc_str += "]"
+                print(f"New direc str: {new_direc_str}")
+                if new_direc_str == "root_dir.children['/']":
+                    new_direc = root_dir
+                else:
+                    new_direc = eval(new_direc_str)
+                return process_commands(iter_num, lines[1:], new_direc)
             else:
                 raise SystemExit("No previous directory to return to")
         else:
@@ -90,7 +112,7 @@ def process_commands(iter_num, lines, direc, prev_direc=None):
             print(f"new_cwd value: {new_cwd}")
             if len(lines) > 1:
                 iter_num += 1
-                return process_commands(iter_num, lines[1:], direc.children[new_cwd], direc)
+                return process_commands(iter_num, lines[1:], direc.children[new_cwd])
         print(f"Current directory is now: {direc.path.absolute()}")
     elif line.startswith("$ ls"):
         print(f"found an `ls` command: {line}")
@@ -120,7 +142,7 @@ def process_commands(iter_num, lines, direc, prev_direc=None):
         if len(lines) > 1:
             print(f"cont_line value: {cont_line}")
             iter_num += 1
-            return process_commands(iter_num, lines[cont_line:], direc, prev_direc)
+            return process_commands(iter_num, lines[cont_line:], direc)
 
 
 def is_command(line):
@@ -129,9 +151,9 @@ def is_command(line):
 
 
 def main():
+    global root_dir
     puz = read_puzzle_input()
     print("Creating root directory with path '/'")
-    root_dir = Dir("/")
     iter_num = 1
 
     process_commands(iter_num, puz, root_dir)

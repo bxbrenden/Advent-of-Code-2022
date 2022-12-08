@@ -1,0 +1,15 @@
+Problem:
+
+I can't currently handle more than one `cd ..` in a row because I am using two args to do it:
+- direc: the current directory object
+- prev_direc: the previous directory object
+
+Currently, when I call `cd ..`, it says, "OK, let's make the directory we're in now the prev_direc, and we'll make the previous directory equal to the current directory". This works, but only for a single upward traversal.
+
+The sample input calls two `cd ..` commands in a row, so my code breaks.
+
+In order to fix this, I need to use the absolute pathnames stored in the root_dir object's `path` attribute.
+
+For example:
+1. Pass in the root_dir object on every call to the function `process_commands()`
+2. 
