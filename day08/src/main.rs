@@ -44,10 +44,18 @@ fn get_grid_dimensions(tree_grid: &Vec<Vec<u32>>) -> (usize, usize) {
 }
 
 fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
+    let mut visible: usize = 0;
     let grid_dims = get_grid_dimensions(tree_grid);
+    let inner_grid_size: usize = (grid_dims.0 - 2) * (grid_dims.1 - 2);
+    let outer_visible: usize = (grid_dims.0 * grid_dims.1) - inner_grid_size;
+    visible += outer_visible;
+    // The product of grid dimensions minus (dims.0 -1 * dims.1 - 1)
+    //   will always equal the visible outer trees
     for (index, row) in tree_grid.iter().enumerate() {
         println!("{}: {:?}", index, row);
     }
+
+    println!("Outer visible: {visible}");
 }
 
 fn main() {
