@@ -16,11 +16,30 @@ fn read_puzzle_input() -> String {
     puz
 }
 
+fn process_command(cmd: &str) -> () {
+    if cmd.contains("$ cd") {
+        println!("Command is a change directory: {}", cmd);
+    } else if cmd.contains("$ ls") {
+        println!("Command is a list: {}", cmd);
+    }
+}
+
+fn walk_tree(lines: &Vec<&str>) -> () {
+    let cwd: String = String::new();
+    for (line_num, line) in lines.iter().enumerate() {
+        match line.chars().nth(0).unwrap() {
+            '$' => {
+                println!("Line number {} is a command.", line_num + 1);
+                process_command(line);
+            },
+            _ => (),
+        }
+    }
+}
+
 fn main() {
     let puz = read_puzzle_input();
 
     let lines: Vec<&str> = puz.split("\n").collect();
-    for line in &lines {
-        println!("{}", line);
-    }
+    walk_tree(&lines);
 }
