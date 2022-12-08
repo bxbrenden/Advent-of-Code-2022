@@ -54,23 +54,22 @@ fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
     for (y, row) in tree_grid.iter().enumerate() {
         for (x, column) in row.iter().enumerate() {
             println!("({y}, {x}): {column}");
-            match is_visible(&tree_grid, x, y) {
-                (true, true, true) => println!("Visible from top, left, and right!"), //          111
-                (true, true, false) => println!("Visible from top and left, but not right."),//   110
-                (true, false, true) => println!("Visible from top and right but not left."),//    101
-                (true, false, false) => println!("Visible from top but not left or right."),//    100
-                (false, true, true) => println!("Visible from the left and right but not top."),//011
-                (false, true, false) => println!("Visible from left, but not top or right."),//   010
-                (false, false, true) => println!("Visible from right, but not top or left."),//   001
-                (false, false, false) => println!("Not visible."),//                              000
+            let viz = is_visible(&tree_grid, x, y);
+            match viz.iter().any(|&b| b == true) {
+                true => println!("Visible!"),
+                false => println!("Not visible"),
             }
+            //match is_visible(&tree_grid, x, y) {
+            //     (true, true, true, true) => println!("Visible!"),
+            //     _ => (),
+            // }
         }
     }
 
     println!("Outer visible: {visible}");
 }
 
-fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> (bool, bool, bool) {
+fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> Vec<bool> {
     let mut x = x_loc;
     let mut y = y_loc;
     let grid_dims = get_grid_dimensions(tree_grid);
@@ -88,6 +87,8 @@ fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> (bool, b
     }
 
     // Check for left visibility by decrementing x values to 0
+    // Reset x
+    x = x_loc;
     let mut left_highest: u32 = 0;
     while x > 0 {
         x -= 1;
@@ -98,6 +99,8 @@ fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> (bool, b
     }
 
     // Check for right visibility by incrementing x values
+    // Reset x
+    x = x_loc;
     let mut right_highest: u32 = 0;
     while x < max_x - 1 {
         x += 1;
@@ -107,9 +110,23 @@ fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> (bool, b
         }
     }
 
-    (cur_height > top_highest,
-     cur_height > left_highest,
-     cur_height > right_highest,)
+    // Check for bottom visibility by incrementing y values
+    // Reset y
+    y = y_loc;
+    let mut bottom_highest: u32 = 0;
+    while y < max_y - 1 {
+        y += 1;
+        let test = tree_grid[y][x];
+        if test > bottom_highest {
+            bottom_highest = test;
+        }
+    }
+
+    vec!(cur_height > top_highest,
+         cur_height > left_highest,
+         cur_height > right_highest,
+         cur_height > bottom_highest,
+    )
 }
 
 fn main() {
