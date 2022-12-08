@@ -16,9 +16,10 @@ fn read_puzzle_input() -> String {
     puz
 }
 
-fn process_command(cmd: &str) -> () {
+fn process_command(cmd: &str, cwd: &str) -> String {
     if cmd.contains("$ cd") {
         println!("Command is a change directory: {}", cmd);
+        cmd.chars().collect::<&str>()[5..].to_string()
     } else if cmd.contains("$ ls") {
         println!("Command is a list: {}", cmd);
     }
@@ -30,7 +31,7 @@ fn walk_tree(lines: &Vec<&str>) -> () {
         match line.chars().nth(0).unwrap() {
             '$' => {
                 println!("Line number {} is a command.", line_num + 1);
-                process_command(line);
+                process_command(line, &cwd);
             },
             _ => (),
         }
