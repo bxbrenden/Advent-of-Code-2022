@@ -45,7 +45,9 @@ class Dir:
     def size(self):
         size = 0
         for child in self.children:
-            size += self.children[child].size()
+            child_size = self.children[child].size()
+            print(f"{self.children[child].path.absolute()}: {child_size}")
+            size += child_size
         size += self.files_size()
         return size
 
@@ -73,11 +75,11 @@ def read_puzzle_input():
 def process_commands(iter_num, lines, direc):
     """Process the Unix commands."""
     global root_dir
-    print(f"Iteration: {iter_num}, direc: {direc}, root_dir: {root_dir}")
+    # print(f"Iteration: {iter_num}, direc: {direc}, root_dir: {root_dir}")
     line = lines[0]
     # print(f"Current raw line: {line}")
     if line.startswith("$ cd"):
-        print(f"Found a `cd` command: {line}")
+        # print(f"Found a `cd` command: {line}")
         # a `cd /` command happens only once at the beginning of every file
         if line == '$ cd /':
             if len(lines) > 1:
@@ -99,7 +101,7 @@ def process_commands(iter_num, lines, direc):
                         new_direc_str += "].children["
                     else:
                         new_direc_str += "]"
-                print(f"New direc str: {new_direc_str}")
+                # print(f"New direc str: {new_direc_str}")
                 if new_direc_str == "root_dir.children['/']":
                     new_direc = root_dir
                 else:
@@ -109,38 +111,38 @@ def process_commands(iter_num, lines, direc):
                 raise SystemExit("No previous directory to return to")
         else:
             new_cwd = line.replace("$ cd ", "")
-            print(f"new_cwd value: {new_cwd}")
+            # print(f"new_cwd value: {new_cwd}")
             if len(lines) > 1:
                 iter_num += 1
                 return process_commands(iter_num, lines[1:], direc.children[new_cwd])
-        print(f"Current directory is now: {direc.path.absolute()}")
+        # print(f"Current directory is now: {direc.path.absolute()}")
     elif line.startswith("$ ls"):
-        print(f"found an `ls` command: {line}")
+        # print(f"found an `ls` command: {line}")
         dir_lines = []
         cont_line = 1
         for line_num, l in enumerate(lines[1:]):
             if not l.startswith("$"):
-                print(f"Appending {l} to dir_lines")
+                # print(f"Appending {l} to dir_lines")
                 dir_lines.append(l)
             else:
                 cont_line += line_num
-                print("End of files and child dirs for this dir")
+                # print("End of files and child dirs for this dir")
                 break
         for dl in dir_lines:
             if dl.startswith("dir"):
                 new_dirname = dl.split()[1]
                 d = Dir(direc.path.absolute() / new_dirname)
-                print(f"Creating new child dir: {d}")
-                print(f"The dict key for the new child dir is: {new_dirname}")
+                # print(f"Creating new child dir: {d}")
+                # print(f"The dict key for the new child dir is: {new_dirname}")
                 direc.children[new_dirname] = d
             elif dl.startswith("$"):
                 raise SystemExit("This should never happen")
             else:
-                print(f"Found a file: {dl}")
-                print(f"Appending file to directory \"{direc.path.absolute()}\": {dl}")
+                # print(f"Found a file: {dl}")
+                # print(f"Appending file to directory \"{direc.path.absolute()}\": {dl}")
                 direc.files.append(dl)
         if len(lines) > 1:
-            print(f"cont_line value: {cont_line}")
+            # print(f"cont_line value: {cont_line}")
             iter_num += 1
             return process_commands(iter_num, lines[cont_line:], direc)
 
@@ -153,11 +155,11 @@ def is_command(line):
 def main():
     global root_dir
     puz = read_puzzle_input()
-    print("Creating root directory with path '/'")
+    # print("Creating root directory with path '/'")
     iter_num = 1
 
     process_commands(iter_num, puz, root_dir)
-    print(f"Total size: {root_dir.size()}\n")
+    print(f"/: {root_dir.size()}\n")
     # root_dir.tree()
 
 

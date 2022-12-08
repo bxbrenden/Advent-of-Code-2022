@@ -1,3 +1,9 @@
+Update:
+I was able to solve day 7, part 1, with some of the ugliest code I've ever written.
+Essentially day7.py prints out a bunch of size info which I wrote to `secondary_input.txt`.
+Then, 2nd.py reads _that_ file and sums the entries where the number is < 100k.
+
+
 Problem:
 
 I can't currently handle more than one `cd ..` in a row because I am using two args to do it:
