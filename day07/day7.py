@@ -96,7 +96,7 @@ def process_commands(iter_num, lines, direc):
                         pl = "/"
                     new_direc_str += "'" + pl + "'"
                     if i < pll - 1:
-                        new_direc_str += "].children.["
+                        new_direc_str += "].children["
                     else:
                         new_direc_str += "]"
                 print(f"New direc str: {new_direc_str}")
@@ -158,7 +158,7 @@ def main():
 
     process_commands(iter_num, puz, root_dir)
     print(f"Total size: {root_dir.size()}\n")
-    root_dir.tree()
+    # root_dir.tree()
 
 
 if __name__ == "__main__":
