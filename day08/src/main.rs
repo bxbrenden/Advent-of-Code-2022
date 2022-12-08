@@ -69,13 +69,19 @@ fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> usize {
 
 fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> Vec<bool> {
     if y_loc == 0 || x_loc == 0 {
+        println!("Returning early");
         return vec!(true);
     }
     let mut x = x_loc;
     let mut y = y_loc;
     let grid_dims = get_grid_dimensions(tree_grid);
-    let max_x = grid_dims.1 as usize;
-    let max_y = grid_dims.0 as usize;
+    let max_x = grid_dims.1 - 1 as usize;
+    let max_y = grid_dims.0 - 1 as usize;
+    println!("Max X: {max_x}, Max Y: {max_y}");
+    if y_loc == max_y || x_loc == max_x {
+        println!("Returning early");
+        return vec!(true);
+    }
     // Check for top visibility by decrementing y values to 0
     let mut top_highest: u32 = 0;
     let cur_height = tree_grid[y_loc][x_loc];
@@ -90,6 +96,7 @@ fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> Vec<bool
     // Check for left visibility by decrementing x values to 0
     // Reset x
     x = x_loc;
+    y = y_loc;
     let mut left_highest: u32 = 0;
     while x > 0 {
         x -= 1;
@@ -102,8 +109,9 @@ fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> Vec<bool
     // Check for right visibility by incrementing x values
     // Reset x
     x = x_loc;
+    y = y_loc;
     let mut right_highest: u32 = 0;
-    while x < max_x - 1 {
+    while x < max_x {
         x += 1;
         let test = tree_grid[y][x];
         if test > right_highest {
@@ -114,8 +122,9 @@ fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> Vec<bool
     // Check for bottom visibility by incrementing y values
     // Reset y
     y = y_loc;
+    x = x_loc;
     let mut bottom_highest: u32 = 0;
-    while y < max_y - 1 {
+    while y < max_y {
         y += 1;
         let test = tree_grid[y][x];
         if test > bottom_highest {
@@ -123,11 +132,13 @@ fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> Vec<bool
         }
     }
 
-    vec!(cur_height > top_highest,
-         cur_height > left_highest,
-         cur_height > right_highest,
-         cur_height > bottom_highest,
-    )
+    let answer = vec!(cur_height > top_highest,
+                      cur_height > left_highest,
+                      cur_height > right_highest,
+                      cur_height > bottom_highest,
+    );
+    println!("{:?}", answer);
+    answer
 }
 
 fn main() {
