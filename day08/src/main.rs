@@ -44,7 +44,10 @@ fn get_grid_dimensions(tree_grid: &Vec<Vec<u32>>) -> (usize, usize) {
 }
 
 fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
-    ()
+    let grid_dims = get_grid_dimensions(tree_grid);
+    for (index, row) in tree_grid.iter().enumerate() {
+        println!("{}: {:?}", index, row);
+    }
 }
 
 fn main() {
@@ -53,7 +56,5 @@ fn main() {
     let tree_grid = get_tree_grid(puz);
     println!("{:?}", tree_grid);
 
-    let dimensions = get_grid_dimensions(&tree_grid);
-    println!("Dimensions: {:?}", dimensions);
     find_visible_trees(&tree_grid);
 }
