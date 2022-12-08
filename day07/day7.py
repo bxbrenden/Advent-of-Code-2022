@@ -2,6 +2,38 @@ from pathlib import Path
 import sys
 
 
+class Dir:
+    """All of Dir's children are also of type Dir."""
+    def __init__(self, path, files=None, children=None):
+        if children is not None:
+            self.children = children
+        else:
+            self.children = []
+        if files is not None:
+            self.files = files
+        else:
+            self.files = []
+        self.path = Path(path)
+
+    def __repr__(self):
+        child_names = [x.path.name for x in self.children]
+        file_names = [x.split()[1] for x in self.files]
+        return f"Dir<{self.path.absolute()}, children: {child_names}, files: {file_names}>"
+
+    def files_size(self):
+        size = 0
+        for file in self.files:
+            size += int(file.split()[0])
+        return size
+
+    def size(self):
+        size = 0
+        for child in self.children:
+            size += child.size()
+        size += self.files_size()
+        return size
+
+
 def read_puzzle_input():
     """Read the puzzle input and return it as a string."""
     if len(sys.argv) == 1:
@@ -19,7 +51,7 @@ def read_puzzle_input():
         raise SystemExit(f"Failed to open file '{file_path}':\n{e}")
 
 
-def process_commands(lines, fs_bytes, cwd):
+def process_commands(lines, direc):
     """Process the Unix commands."""
     line = lines[0]
     if line.startswith("$ cd"):
@@ -41,11 +73,11 @@ def process_commands(lines, fs_bytes, cwd):
                 cont_line = line_num
         for dl in dir_lines:
             if not dl.startswith("dir"):
-                spl = dl.split()
-                byte_val = int(spl[0])
-                filename = spl[1]
-                fs_bytes += byte_val
                 print(f"file {filename}: {byte_val} bytes")
+
+            else:
+                #Create Dir objects.
+                pass
     if len(lines) > 1:
         return process_commands(lines[1:], fs_bytes, cwd)
     else:
@@ -60,10 +92,9 @@ def is_command(line):
 
 def main():
     puz = read_puzzle_input()
-    cwd = Path("/")
-    fs_bytes = 0
+    root_dir = Dir("/")
 
-    fs_bytes = process_commands(puz, fs_bytes, cwd)
+    process_commands(puz, root_dir)
     print(f"Total bytes: {fs_bytes}")
 
 if __name__ == "__main__":
