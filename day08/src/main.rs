@@ -17,8 +17,8 @@ fn read_puzzle_input() -> String {
     puz
 }
 
-fn puz_to_vec(puz: String) -> Vec<Vec<u32>> {
-    let mut main_vec: Vec<Vec<u32>> = Vec::new();
+fn get_tree_grid(puz: String) -> Vec<Vec<u32>> {
+    let mut tree_grid: Vec<Vec<u32>> = Vec::new();
     let spl = puz.trim().split("\n");
     for s in spl {
         let mut inner_v: Vec<u32> = Vec::new();
@@ -26,15 +26,34 @@ fn puz_to_vec(puz: String) -> Vec<Vec<u32>> {
             let n: u32 = c.to_digit(RADIX).unwrap();
             inner_v.push(n);
         }
-        main_vec.push(inner_v);
+        tree_grid.push(inner_v);
     }
 
-    main_vec
+    tree_grid
+}
+
+fn get_grid_dimensions(tree_grid: &Vec<Vec<u32>>) -> (usize, usize) {
+    let height: usize = tree_grid.len();
+    let mut width: usize = 0;
+    for row in tree_grid.iter() {
+        width = row.len();
+        break;
+    }
+
+    (height, width)
+}
+
+fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
+    ()
 }
 
 fn main() {
     let puz = read_puzzle_input();
 
-    let main_vec = puz_to_vec(puz);
-    println!("{:?}", main_vec);
+    let tree_grid = get_tree_grid(puz);
+    println!("{:?}", tree_grid);
+
+    let dimensions = get_grid_dimensions(&tree_grid);
+    println!("Dimensions: {:?}", dimensions);
+    find_visible_trees(&tree_grid);
 }
