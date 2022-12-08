@@ -32,7 +32,20 @@ def process_commands(lines, fs_bytes, cwd):
         print(f"Current directory is now: {cwd}")
     elif line.startswith("$ ls"):
         print("found an `ls` command.")
-
+        dir_lines = []
+        cont_line = 0
+        for line_num, line in enumerate(lines[1:]):
+            if not line.startswith("$"):
+                dir_lines.append(line)
+            else:
+                cont_line = line_num
+        for dl in dir_lines:
+            if not dl.startswith("dir"):
+                spl = dl.split()
+                byte_val = int(spl[0])
+                filename = spl[1]
+                fs_bytes += byte_val
+                print(f"file {filename}: {byte_val} bytes")
     if len(lines) > 1:
         return process_commands(lines[1:], fs_bytes, cwd)
     else:
@@ -51,6 +64,7 @@ def main():
     fs_bytes = 0
 
     fs_bytes = process_commands(puz, fs_bytes, cwd)
+    print(f"Total bytes: {fs_bytes}")
 
 if __name__ == "__main__":
     main()
