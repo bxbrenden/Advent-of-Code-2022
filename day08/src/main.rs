@@ -15,7 +15,23 @@ fn read_puzzle_input() -> String {
     puz
 }
 
+fn puz_to_vec(puz: String) -> Vec<Vec<char>> {
+    let mut main_vec: Vec<Vec<char>> = Vec::new();
+    let spl = puz.trim().split("\n");
+    for s in spl {
+        let mut inner_v: Vec<char> = Vec::new();
+        for c in s.chars() {
+            inner_v.push(c);
+        }
+        main_vec.push(inner_v);
+    }
+
+    main_vec
+}
+
 fn main() {
     let puz = read_puzzle_input();
-    println!("{}", puz);
+
+    let main_vec = puz_to_vec(puz);
+    println!("{:?}", main_vec);
 }
