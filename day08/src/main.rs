@@ -51,9 +51,9 @@ fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
     visible += outer_visible;
     // The product of grid dimensions minus (dims.0 -1 * dims.1 - 1)
     //   will always equal the visible outer trees
-    for (index_x, row) in tree_grid.iter().enumerate() {
-        for (index_y, column) in row.iter().enumerate() {
-            println!("({index_x}, {index_y}): {column}");
+    for (index_y, row) in tree_grid.iter().enumerate() {
+        for (index_x, column) in row.iter().enumerate() {
+            println!("({index_y}, {index_x}): {column}");
         }
         // println!("{}: {:?}", index, row);
     }
@@ -63,9 +63,9 @@ fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
 
 fn main() {
     let puz = read_puzzle_input();
+    println!("{}", puz);
 
     let tree_grid = get_tree_grid(puz);
-    println!("{:?}", tree_grid);
 
     find_visible_trees(&tree_grid);
 }
