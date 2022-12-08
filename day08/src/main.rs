@@ -70,6 +70,9 @@ fn find_visible_trees(tree_grid: &Vec<Vec<u32>>) -> () {
 }
 
 fn is_visible(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc: usize) -> Vec<bool> {
+    if y_loc == 0 || x_loc == 0 {
+        return vec!(true);
+    }
     let mut x = x_loc;
     let mut y = y_loc;
     let grid_dims = get_grid_dimensions(tree_grid);
