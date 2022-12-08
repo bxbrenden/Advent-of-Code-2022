@@ -66,8 +66,9 @@ def read_puzzle_input():
         raise SystemExit(f"Failed to open file '{file_path}':\n{e}")
 
 
-def process_commands(lines, direc, prev_direc=None):
+def process_commands(iter_num, lines, direc, prev_direc=None):
     """Process the Unix commands."""
+    print(f"Iteration: {iter_num}, direc: {direc}, prev_direc: {prev_direc}")
     line = lines[0]
     # print(f"Current raw line: {line}")
     if line.startswith("$ cd"):
@@ -75,18 +76,21 @@ def process_commands(lines, direc, prev_direc=None):
         # a `cd /` command happens only once at the beginning of every file
         if line == '$ cd /':
             if len(lines) > 1:
-                return process_commands(lines[1:], direc)
+                iter_num += 1
+                return process_commands(iter_num, lines[1:], direc)
         elif line == '$ cd ..':
             if prev_direc is not None:
                 if len(lines) > 1:
-                    return process_commands(lines[1:], prev_direc, direc)
+                    iter_num += 1
+                    return process_commands(iter_num, lines[1:], prev_direc, direc)
             else:
                 raise SystemExit("No previous directory to return to")
         else:
             new_cwd = line.replace("$ cd ", "")
             print(f"new_cwd value: {new_cwd}")
             if len(lines) > 1:
-                return process_commands(lines[1:], direc.children[new_cwd], direc)
+                iter_num += 1
+                return process_commands(iter_num, lines[1:], direc.children[new_cwd], direc)
         print(f"Current directory is now: {direc.path.absolute()}")
     elif line.startswith("$ ls"):
         print(f"found an `ls` command: {line}")
@@ -107,13 +111,16 @@ def process_commands(lines, direc, prev_direc=None):
                 print(f"Creating new child dir: {d}")
                 print(f"The dict key for the new child dir is: {new_dirname}")
                 direc.children[new_dirname] = d
+            elif dl.startswith("$"):
+                raise SystemExit("This should never happen")
             else:
                 print(f"Found a file: {dl}")
                 print(f"Appending file to directory \"{direc.path.absolute()}\": {dl}")
                 direc.files.append(dl)
         if len(lines) > 1:
             print(f"cont_line value: {cont_line}")
-            return process_commands(lines[cont_line:], direc)
+            iter_num += 1
+            return process_commands(iter_num, lines[cont_line:], direc, prev_direc)
 
 
 def is_command(line):
@@ -125,8 +132,9 @@ def main():
     puz = read_puzzle_input()
     print("Creating root directory with path '/'")
     root_dir = Dir("/")
+    iter_num = 1
 
-    process_commands(puz, root_dir)
+    process_commands(iter_num, puz, root_dir)
     print(f"Total size: {root_dir.size()}\n")
     root_dir.tree()
 
