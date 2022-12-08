@@ -1,6 +1,8 @@
 use std::env;
 use std::fs;
 
+const RADIX: u32 = 10;
+
 fn read_puzzle_input() -> String {
     let args: Vec<String> = env::args().collect();
     let file_path = match args.len() {
@@ -15,13 +17,14 @@ fn read_puzzle_input() -> String {
     puz
 }
 
-fn puz_to_vec(puz: String) -> Vec<Vec<char>> {
-    let mut main_vec: Vec<Vec<char>> = Vec::new();
+fn puz_to_vec(puz: String) -> Vec<Vec<u32>> {
+    let mut main_vec: Vec<Vec<u32>> = Vec::new();
     let spl = puz.trim().split("\n");
     for s in spl {
-        let mut inner_v: Vec<char> = Vec::new();
+        let mut inner_v: Vec<u32> = Vec::new();
         for c in s.chars() {
-            inner_v.push(c);
+            let n: u32 = c.to_digit(RADIX).unwrap();
+            inner_v.push(n);
         }
         main_vec.push(inner_v);
     }
