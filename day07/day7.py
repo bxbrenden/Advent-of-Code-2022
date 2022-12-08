@@ -22,6 +22,11 @@ class Dir:
     def tree(self):
         num_slashes = str(self.path.absolute()).count("/")
         indent = " " * (num_slashes * 2)
+        main_indent = indent[:-2]
+        if str(self.path.absolute()) == "/":
+            print(f"{main_indent}- / (dir)")
+        else:
+            print(f"{main_indent}-", self.path.name)
         for file in self.files:
             spl = file.split()
             print(f"{indent}- {spl[1]} (file, size={spl[0]})")
@@ -64,7 +69,7 @@ def read_puzzle_input():
 def process_commands(lines, direc, prev_direc=None):
     """Process the Unix commands."""
     line = lines[0]
-    print(f"Current raw line: {line}")
+    # print(f"Current raw line: {line}")
     if line.startswith("$ cd"):
         print(f"Found a `cd` command: {line}")
         # a `cd /` command happens only once at the beginning of every file
@@ -92,7 +97,8 @@ def process_commands(lines, direc, prev_direc=None):
                 print(f"Appending {l} to dir_lines")
                 dir_lines.append(l)
             else:
-                cont_line = line_num
+                cont_line += line_num
+                print("End of files and child dirs for this dir")
                 break
         for dl in dir_lines:
             if dl.startswith("dir"):
@@ -121,7 +127,7 @@ def main():
     root_dir = Dir("/")
 
     process_commands(puz, root_dir)
-    print(f"Total size: {root_dir.size()}")
+    print(f"Total size: {root_dir.size()}\n")
     root_dir.tree()
 
 
