@@ -252,11 +252,6 @@ fn plot_grid(visited: &HashSet<(i32, i32)>) {
     grid_width += 2;
     grid_height += 1;
 
-    println!("Grid Width: {}, Grid Height: {}", grid_width, grid_height);
-
-    //TODO: create a blank grid which is Vec<Vec<char>>
-    //   all rows will be "....." when rendered initially
-
     let mut grid: Vec<Vec<char>> = Vec::new();
     for _ in 0..grid_height {
         let mut row: Vec<char> = Vec::new();
@@ -265,6 +260,12 @@ fn plot_grid(visited: &HashSet<(i32, i32)>) {
         }
         grid.push(row);
     }
+
+    for coord in visited.iter() {
+        grid[coord.1 as usize][coord.0 as usize] = '#';
+    }
+
+    grid[0 as usize][0 as usize] = 's';
 
     for row in grid.into_iter().rev() {
         let s: String = row.into_iter().collect();
