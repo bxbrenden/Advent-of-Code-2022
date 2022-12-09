@@ -83,6 +83,7 @@ fn get_scenic_score(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc:usize) -> u32
     let grid_max = get_grid_dimensions(tree_grid);
     let x_max: usize = grid_max.0 - 1;
     let y_max: usize = grid_max.1 - 1;
+    let current = tree_grid[y_loc][x_loc];
 
     let mut top_val: u32 = 0;
     let mut left_val: u32 = 0;
@@ -96,37 +97,57 @@ fn get_scenic_score(tree_grid: &Vec<Vec<u32>>, x_loc: usize, y_loc:usize) -> u32
     // Check left score by decrementing x values
     let mut xl = x_loc;
     let yl = y_loc;
-    while xl > 1 {
+    while xl > 0 {
         xl -= 1;
         let test = tree_grid[yl][xl];
-        left_val = if test > left_val {test} else {left_val};
+        if test < current {
+            left_val += 1;
+        } else {
+            left_val += 1;
+            break;
+        }
     }
 
     // Check top score by decrementing y values
     let xt = x_loc;
     let mut yt = y_loc;
-    while yt > 1 {
+    while yt > 0 {
         yt -= 1;
         let test = tree_grid[yt][xt];
-        top_val = if test > top_val {test} else {top_val};
+        if test < current {
+            top_val += 1;
+        } else {
+            top_val += 1;
+            break;
+        }
     }
 
     // Check right score by incrementing x values
     let mut xr = x_loc;
     let yr = y_loc;
-    while xr < x_max - 1 {
+    while xr < x_max {
         xr += 1;
         let test = tree_grid[yr][xr];
-        right_val = if test > right_val {test} else {right_val};
+        if test < current {
+            right_val += 1;
+        } else {
+            right_val += 1;
+            break;
+        }
     }
 
     // Check bottom score by incrementing y values
     let xb = x_loc;
     let mut yb = y_loc;
-    while yb < y_max - 1 {
+    while yb < y_max {
         yb += 1;
         let test = tree_grid[yb][xb];
-        bottom_val = if test > bottom_val {test} else {bottom_val};
+        if test < current {
+            bottom_val += 1;
+        } else {
+            bottom_val += 1;
+            break;
+        }
     }
 
     println!("({}, {}) {}: (left){} *(right) {} *(top) {} *(bottom) {} = {}",
