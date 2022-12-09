@@ -75,6 +75,17 @@ fn touching(head: &Pos, tail: &Pos) -> bool {
     false
 }
 
+/// Ensure the tail stays adjacent to the head.
+/// Also, update list of visited coordinates for the tail.
+fn manage_tail(rope: &Rope) {
+    println!(
+        "Touching? {}. {:?}, {:?}",
+        touching(&rope.head, &rope.tail),
+        rope.head,
+        rope.tail
+    );
+}
+
 fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
     for step in steps.iter() {
         let num_moves = step.1;
@@ -83,48 +94,28 @@ fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
                 // Up means head.y increases
                 for _ in 0..num_moves {
                     rope.head.y += 1;
-                    println!(
-                        "Touching? {}. {:?}, {:?}",
-                        touching(&rope.head, &rope.tail),
-                        rope.head,
-                        rope.tail
-                    );
+                    manage_tail(&rope);
                 }
             }
             'L' => {
                 // Left means head.x decreases
                 for _ in 0..num_moves {
                     rope.head.x -= 1;
-                    println!(
-                        "Touching? {}. {:?}, {:?}",
-                        touching(&rope.head, &rope.tail),
-                        rope.head,
-                        rope.tail
-                    );
+                    manage_tail(&rope);
                 }
             }
             'R' => {
                 // Right means head.x increases
                 for _ in 0..num_moves {
                     rope.head.x += 1;
-                    println!(
-                        "Touching? {}. {:?}, {:?}",
-                        touching(&rope.head, &rope.tail),
-                        rope.head,
-                        rope.tail
-                    );
+                    manage_tail(&rope);
                 }
             }
             'D' => {
                 // Down means head.y decreases
                 for _ in 0..num_moves {
                     rope.head.y -= 1;
-                    println!(
-                        "Touching? {}. {:?}, {:?}",
-                        touching(&rope.head, &rope.tail),
-                        rope.head,
-                        rope.tail
-                    );
+                    manage_tail(&rope);
                 }
             }
             _ => {
