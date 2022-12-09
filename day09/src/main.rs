@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::env;
 use std::fs;
 
@@ -13,7 +14,7 @@ struct Pos {
 struct Rope {
     head: Pos,
     tail: Pos,
-    visited: Vec<(i32, i32)>,
+    visited: HashSet<(i32, i32)>,
 }
 
 impl Pos {
@@ -24,9 +25,10 @@ impl Pos {
 
 impl Rope {
     fn new() -> Self {
-        let head = Pos::new(0, 0);
-        let tail = Pos::new(0, 0);
-        let visited = vec!((0, 0));
+        let mut head = Pos::new(0, 0);
+        let mut tail = Pos::new(0, 0);
+        let mut visited: HashSet<(i32, i32)> = HashSet::new();
+        visited.insert((0, 0));
         Rope { head: head, tail: tail, visited: visited }
     }
 }
@@ -57,6 +59,22 @@ fn parse_steps(puz: &String) -> Vec<(char, i32)> {
     steps
 }
 
+fn take_steps(steps: Vec<(char, i32)>, rope: Rope) -> () {
+    for step in steps.iter() {
+        // println!("{:?}", step.1);
+        match step.0 {
+            'U' => (),  // Up means tail.y increases
+            'L' => (),  // Left means tail.x decreases
+            'R' => (),  // Right means tail.x increases
+            'D' => (),  // Down means tail.y decreases
+            _ => {
+                println!("Unexpected direction: {}", step.0);
+                break;
+            }
+        }
+    }
+}
+
 fn main() {
     let puz: String = read_puzzle_input();
     println!("{}", puz);
@@ -66,4 +84,6 @@ fn main() {
 
     let steps = parse_steps(&puz);
     println!("{:?}", steps);
+
+    take_steps(steps, rope);
 }
