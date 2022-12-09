@@ -18,7 +18,7 @@ struct Rope {
 }
 
 impl Pos {
-    fn new(x: i32, y:i32) -> Self {
+    fn new(x: i32, y: i32) -> Self {
         Pos { x: x, y: y }
     }
 }
@@ -29,7 +29,11 @@ impl Rope {
         let mut tail = Pos::new(0, 0);
         let mut visited: HashSet<(i32, i32)> = HashSet::new();
         visited.insert((0, 0));
-        Rope { head: head, tail: tail, visited: visited }
+        Rope {
+            head: head,
+            tail: tail,
+            visited: visited,
+        }
     }
 }
 
@@ -41,8 +45,7 @@ fn read_puzzle_input() -> String {
         _ => "sample_input.txt",
     };
 
-    let puz = fs::read_to_string(file_path)
-        .expect("Failed to read file \"{file_path}\"");
+    let puz = fs::read_to_string(file_path).expect("Failed to read file \"{file_path}\"");
     puz
 }
 
@@ -59,21 +62,71 @@ fn parse_steps(puz: &String) -> Vec<(char, i32)> {
     steps
 }
 
-fn touching(head: Pos, tail: Pos) -> bool {
-    /// Check if the head and tail of a rope are touching
-    /// TODO: implement
-    true
+/// Check if the head and tail of a rope are touching
+fn touching(head: &Pos, tail: &Pos) -> bool {
+    // Case 1: Head covers tail
+    if head.x == tail.x && head.y == tail.y {
+        return true;
+    }
+    // Case 2: Head is one space to the right (x+1) of tail
+    else if head.x - tail.x == 1 && head.y == tail.y {
+        return true;
+    }
+    false
 }
 
 fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
     for step in steps.iter() {
-        // println!("{:?}", step.1);
         let num_moves = step.1;
         match step.0 {
-            'U' => rope.head.y += num_moves,  // Up means head.y increases
-            'L' => rope.head.x -= num_moves,  // Left means head.x decreases
-            'R' => rope.head.x += num_moves,  // Right means head.x increases
-            'D' => rope.head.y -= num_moves,  // Down means head.y decreases
+            'U' => {
+                // Up means head.y increases
+                for _ in 0..num_moves {
+                    rope.head.y += 1;
+                    println!(
+                        "Touching? {}. {:?}, {:?}",
+                        touching(&rope.head, &rope.tail),
+                        rope.head,
+                        rope.tail
+                    );
+                }
+            }
+            'L' => {
+                // Left means head.x decreases
+                for _ in 0..num_moves {
+                    rope.head.x -= 1;
+                    println!(
+                        "Touching? {}. {:?}, {:?}",
+                        touching(&rope.head, &rope.tail),
+                        rope.head,
+                        rope.tail
+                    );
+                }
+            }
+            'R' => {
+                // Right means head.x increases
+                for _ in 0..num_moves {
+                    rope.head.x += 1;
+                    println!(
+                        "Touching? {}. {:?}, {:?}",
+                        touching(&rope.head, &rope.tail),
+                        rope.head,
+                        rope.tail
+                    );
+                }
+            }
+            'D' => {
+                // Down means head.y decreases
+                for _ in 0..num_moves {
+                    rope.head.y -= 1;
+                    println!(
+                        "Touching? {}. {:?}, {:?}",
+                        touching(&rope.head, &rope.tail),
+                        rope.head,
+                        rope.tail
+                    );
+                }
+            }
             _ => {
                 println!("Unexpected direction: {}", step.0);
                 break;
