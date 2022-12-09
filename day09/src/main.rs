@@ -112,8 +112,8 @@ fn manage_tail(rope: &mut Rope) {
     let head = &mut rope.head;
     let tail = &mut rope.tail;
     // If not touching, move tail to make it adjacent
-    // Case 1: head is two spaces right (x+2) of tail. Move tail one right (x+1)
     if t1 == false {
+        // Case 1: head is two spaces right (x+2) of tail. Move tail one right (x+1)
         if head.x - tail.x == 2 && head.y == tail.y {
             tail.x += 1;
         } // Case 2: head is two spaces above (y+2) of tail. Move tail one up (y+1)
@@ -126,12 +126,67 @@ fn manage_tail(rope: &mut Rope) {
         else if head.x == tail.x && head.y - tail.y == -2 {
             tail.y -= 1;
         } // Case 5: Head is one space right (x+1) and two spaces up (y+2).
-          // Move tail diagonally up and right (x+1) (y+1).
+          // Move tail diagonally up and right (y+1) (x+1).
+          // .H
+          // ..
+          // T.
         else if head.x - tail.x == 1 && head.y - tail.y == 2 {
             tail.x += 1;
             tail.y += 1;
         } //Case 6: Head is two spaces right (x+2) and one space up (y+1).
-          // Move tail
+          // Move tail diagonally up and right (y+1) (x+1)
+          // ..H
+          // T..
+        else if head.x - tail.x == 2 && head.y - tail.y == 1 {
+            tail.x += 1;
+            tail.y += 1;
+        } // Case 7: Head is one space left (x-1) and two up (y+2)
+          // Move tail diagonally up and left (y+1) (x+1)
+          // H.
+          // ..
+          // .T
+        else if head.x - tail.x == -1 && head.y - tail.y == 2 {
+            tail.x -= 1;
+            tail.y += 1;
+        } // Case 8: Head is two spaces left (x-2) and one up (y+1)
+          // Move tail diagonally up and left (y+1) (x+1)
+          // H..
+          // ..T
+        else if head.x - tail.x == -2 && head.y - tail.y == 1 {
+            tail.x -= 1;
+            tail.y += 1;
+        } // Case 9: Head is one space left (x-1) and two spaces down (y-2)
+          // Move tail diagonally down and left (y-1) (x-1)
+          // .T
+          // ..
+          // H.
+        else if head.x - tail.x == -1 && head.y - tail.y == -2 {
+            tail.x -= 1;
+            tail.y -= 1;
+        } // Case 10: Head is two spaces left (x-2) and one space down (y-2)
+          // Move tail diagonally down and left (y-1) (x-1)
+        else if head.x - tail.x == -2 && head.y - tail.y == -1 {
+            tail.x -= 1;
+            tail.y -= 1;
+        } // Case 11: Head is one space right (x+1) and two spaces down (y-2)
+          // Move tail diagonally down and right (y-1), (x+1)
+          // T.
+          // ..
+          // .H
+        else if head.x - tail.x == 1 && head.y - tail.y == -2 {
+            tail.x += 1;
+            tail.y -= 1;
+        } // Case 12: Head is two spaces right (x+2) and one space down (y-1)
+          // Move tail diagonally down and right (y-1) (x+1)
+          // T..
+          // ..H
+        else if head.x - tail.x == 2 && head.y - tail.y == -1 {
+            tail.x += 1;
+            tail.y -= 1;
+        } // Case 13: No such case, freak out
+        else {
+            panic!("Unknown case for non-adjacent head and tail: {:?}", rope);
+        }
     }
 
     rope.visited.insert((tail.x, tail.y));
@@ -139,7 +194,7 @@ fn manage_tail(rope: &mut Rope) {
     println!("Touching? {}. {:?}, {:?}", t2, &rope.head, &rope.tail);
 }
 
-fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
+fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> Rope {
     for step in steps.iter() {
         let num_moves = step.1;
         match step.0 {
@@ -178,6 +233,8 @@ fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
         }
         println!("{:?}", rope);
     }
+
+    rope
 }
 
 fn main() {
@@ -190,5 +247,6 @@ fn main() {
     let steps = parse_steps(&puz);
     // println!("{:?}", steps);
 
-    take_steps(steps, rope);
+    let final_rope = take_steps(steps, rope);
+    println!("Unique spots visited: {}", &final_rope.visited.len());
 }
