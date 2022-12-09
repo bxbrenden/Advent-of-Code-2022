@@ -108,6 +108,7 @@ fn touching(head: &Pos, tail: &Pos) -> bool {
 fn manage_tail(rope: &mut Rope) {
     let t1 = touching(&rope.head, &rope.tail);
     // println!("Touching? {}. {:?}, {:?}", t1, &rope.head, &rope.tail);
+    plot_grid(&rope, false);
 
     let head = &mut rope.head;
     let tail = &mut rope.tail;
@@ -249,20 +250,21 @@ fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> Rope {
     rope
 }
 
-fn plot_final_grid(visited: &HashSet<(i32, i32)>) {
-    let mut grid_width: i32 = 0;
-    let mut grid_height: i32 = 0;
+fn plot_grid(rope: &Rope, summary: bool) {
+    let visited = &rope.visited;
+    let grid_width: i32 = 6;
+    let grid_height: i32 = 5;
 
-    for h in visited.iter() {
-        let x = h.0;
-        let y = h.1;
-        grid_width = if x > grid_width { x } else { grid_width };
-        grid_height = if y > grid_height { y } else { grid_height };
-    }
+    // for h in visited.iter() {
+    //     let x = h.0;
+    //     let y = h.1;
+    //     grid_width = if x > grid_width { x } else { grid_width };
+    //     grid_height = if y > grid_height { y } else { grid_height };
+    // }
 
     // Match the padding from the example
-    grid_width += 2;
-    grid_height += 1;
+    // grid_width += 2;
+    // grid_height += 1;
 
     let mut grid: Vec<Vec<char>> = Vec::new();
     for _ in 0..grid_height {
@@ -273,11 +275,16 @@ fn plot_final_grid(visited: &HashSet<(i32, i32)>) {
         grid.push(row);
     }
 
-    for coord in visited.iter() {
-        grid[coord.1 as usize][coord.0 as usize] = '#';
-    }
-
     grid[0 as usize][0 as usize] = 's';
+
+    if summary {
+        for coord in visited.iter() {
+            grid[coord.1 as usize][coord.0 as usize] = '#';
+        }
+    } else {
+        grid[rope.tail.y as usize][rope.tail.x as usize] = 'T';
+        grid[rope.head.y as usize][rope.head.x as usize] = 'H';
+    }
 
     for row in grid.into_iter().rev() {
         let s: String = row.into_iter().collect();
@@ -296,7 +303,8 @@ fn main() {
     let steps = parse_steps(&puz);
     // println!("{:?}", steps);
 
+    plot_grid(&rope, false);
     let final_rope = take_steps(steps, rope);
     println!("Unique spots visited: {}", &final_rope.visited.len());
-    plot_final_grid(&final_rope.visited);
+    plot_grid(&final_rope, true);
 }
