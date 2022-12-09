@@ -59,6 +59,12 @@ fn parse_steps(puz: &String) -> Vec<(char, i32)> {
     steps
 }
 
+fn touching(head: Pos, tail: Pos) -> bool {
+    /// Check if the head and tail of a rope are touching
+    /// TODO: implement
+    true
+}
+
 fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
     for step in steps.iter() {
         // println!("{:?}", step.1);
