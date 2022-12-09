@@ -108,7 +108,7 @@ fn touching(head: &Pos, tail: &Pos) -> bool {
 fn manage_tail(rope: &mut Rope) {
     let t1 = touching(&rope.head, &rope.tail);
     // println!("Touching? {}. {:?}, {:?}", t1, &rope.head, &rope.tail);
-    plot_grid(&rope, false);
+    // plot_grid(&rope, false);
 
     let head = &mut rope.head;
     let tail = &mut rope.tail;
@@ -205,10 +205,12 @@ fn manage_tail(rope: &mut Rope) {
     rope.visited.insert((tail.x, tail.y));
     let t2 = touching(&rope.head, &rope.tail);
     // println!("Touching? {}. {:?}, {:?}", t2, &rope.head, &rope.tail);
+    plot_grid(&rope, false);
 }
 
 fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> Rope {
     for step in steps.iter() {
+        println!("== {} {} ==", step.0, step.1);
         let num_moves = step.1;
         match step.0 {
             'U' => {
@@ -285,6 +287,8 @@ fn plot_grid(rope: &Rope, summary: bool) {
         grid[rope.tail.y as usize][rope.tail.x as usize] = 'T';
         grid[rope.head.y as usize][rope.head.x as usize] = 'H';
     }
+
+    grid[0 as usize][0 as usize] = 's';
 
     for row in grid.into_iter().rev() {
         let s: String = row.into_iter().collect();
