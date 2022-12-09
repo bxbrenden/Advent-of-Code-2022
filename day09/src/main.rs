@@ -72,18 +72,42 @@ fn touching(head: &Pos, tail: &Pos) -> bool {
     else if head.x - tail.x == 1 && head.y == tail.y {
         return true;
     }
+    // Case 3: Head is one space to the left (x-1) of tail
+    else if head.x - tail.x == -1 && head.y == tail.y {
+        return true;
+    }
+    // Case 4: Head is one space above (y+1) tail
+    else if head.x == tail.x && head.y - tail.y == 1 {
+        return true;
+    }
+    // Case 5: Head is one space below (y-a) tail
+    else if head.x == tail.x && head.y - tail.y == -1 {
+        return true;
+    }
+    // Case 6: Head is one space right (x+1) and one space above (y+1) tail
+    else if head.x - tail.x == 1 && head.y - tail.y == 1 {
+        return true;
+    }
+    // Case 7: Head is one space right (x+1) and one space below (y-1) tail
+    else if head.x - tail.x == 1 && head.y - tail.y == -1 {
+        return true;
+    }
+    // Case 8: Head is one space left (x-1) and one space above (y+1) tail
+    else if head.x - tail.x == -1 && head.y - tail.y == 1 {
+        return true;
+    }
+    // Case 9: Head is one space left (x-1) and one space below (y-1) tail
+    else if head.x - tail.x == -1 && head.y - tail.y == -1 {
+        return true;
+    }
     false
 }
 
 /// Ensure the tail stays adjacent to the head.
 /// Also, update list of visited coordinates for the tail.
 fn manage_tail(rope: &Rope) {
-    println!(
-        "Touching? {}. {:?}, {:?}",
-        touching(&rope.head, &rope.tail),
-        rope.head,
-        rope.tail
-    );
+    let t = touching(&rope.head, &rope.tail);
+    println!("Touching? {}. {:?}, {:?}", t, rope.head, rope.tail);
 }
 
 fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
