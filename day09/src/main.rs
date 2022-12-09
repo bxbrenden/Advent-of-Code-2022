@@ -105,9 +105,38 @@ fn touching(head: &Pos, tail: &Pos) -> bool {
 
 /// Ensure the tail stays adjacent to the head.
 /// Also, update list of visited coordinates for the tail.
-fn manage_tail(rope: &Rope) {
-    let t = touching(&rope.head, &rope.tail);
-    println!("Touching? {}. {:?}, {:?}", t, rope.head, rope.tail);
+fn manage_tail(rope: &mut Rope) {
+    let t1 = touching(&rope.head, &rope.tail);
+    println!("Touching? {}. {:?}, {:?}", t1, &rope.head, &rope.tail);
+
+    let head = &mut rope.head;
+    let tail = &mut rope.tail;
+    // If not touching, move tail to make it adjacent
+    // Case 1: head is two spaces right (x+2) of tail. Move tail one right (x+1)
+    if t1 == false {
+        if head.x - tail.x == 2 && head.y == tail.y {
+            tail.x += 1;
+        } // Case 2: head is two spaces above (y+2) of tail. Move tail one up (y+1)
+        else if head.x == tail.x && head.y - tail.y == 2 {
+            tail.y += 1;
+        } // Case 3: head is two spaces left (x-2) of tail. Move tail one left (x-1)
+        else if head.x - tail.x == -2 && head.y == tail.y {
+            tail.x -= 1;
+        } // Case 4: head is two spaces below (y-2) of tail. Move tail one down (y-1)
+        else if head.x == tail.x && head.y - tail.y == -2 {
+            tail.y -= 1;
+        } // Case 5: Head is one space right (x+1) and two spaces up (y+2).
+          // Move tail diagonally up and right (x+1) (y+1).
+        else if head.x - tail.x == 1 && head.y - tail.y == 2 {
+            tail.x += 1;
+            tail.y += 1;
+        } //Case 6: Head is two spaces right (x+2) and one space up (y+1).
+          // Move tail
+    }
+
+    rope.visited.insert((tail.x, tail.y));
+    let t2 = touching(&rope.head, &rope.tail);
+    println!("Touching? {}. {:?}, {:?}", t2, &rope.head, &rope.tail);
 }
 
 fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
@@ -118,28 +147,28 @@ fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
                 // Up means head.y increases
                 for _ in 0..num_moves {
                     rope.head.y += 1;
-                    manage_tail(&rope);
+                    manage_tail(&mut rope);
                 }
             }
             'L' => {
                 // Left means head.x decreases
                 for _ in 0..num_moves {
                     rope.head.x -= 1;
-                    manage_tail(&rope);
+                    manage_tail(&mut rope);
                 }
             }
             'R' => {
                 // Right means head.x increases
                 for _ in 0..num_moves {
                     rope.head.x += 1;
-                    manage_tail(&rope);
+                    manage_tail(&mut rope);
                 }
             }
             'D' => {
                 // Down means head.y decreases
                 for _ in 0..num_moves {
                     rope.head.y -= 1;
-                    manage_tail(&rope);
+                    manage_tail(&mut rope);
                 }
             }
             _ => {
@@ -153,13 +182,13 @@ fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
 
 fn main() {
     let puz: String = read_puzzle_input();
-    println!("{}", puz);
+    // println!("{}", puz);
 
     let mut rope = Rope::new();
-    println!("{:?}", rope);
+    // println!("{:?}", rope);
 
     let steps = parse_steps(&puz);
-    println!("{:?}", steps);
+    // println!("{:?}", steps);
 
     take_steps(steps, rope);
 }
