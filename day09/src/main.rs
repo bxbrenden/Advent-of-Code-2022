@@ -1,6 +1,8 @@
 use std::env;
 use std::fs;
 
+const RADIX: u32 = 10;
+
 #[derive(Debug)]
 struct Pos {
     x: i32,
@@ -42,10 +44,26 @@ fn read_puzzle_input() -> String {
     puz
 }
 
+fn parse_steps(puz: &String) -> Vec<(char, i32)> {
+    let mut steps: Vec<(char, i32)> = Vec::new();
+    let spl = puz.trim().split("\n");
+    for sp in spl {
+        println!("{}", sp);
+        let way: char = sp.chars().nth(0).unwrap();
+        let num: u32 = sp.chars().nth(2).unwrap().to_digit(RADIX).unwrap();
+        steps.push((way, num as i32));
+    }
+
+    steps
+}
+
 fn main() {
     let puz: String = read_puzzle_input();
     println!("{}", puz);
 
-    let rope = Rope::new();
+    let mut rope = Rope::new();
     println!("{:?}", rope);
+
+    let steps = parse_steps(&puz);
+    println!("{:?}", steps);
 }
