@@ -237,6 +237,41 @@ fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> Rope {
     rope
 }
 
+fn plot_grid(visited: &HashSet<(i32, i32)>) {
+    let mut grid_width: i32 = 0;
+    let mut grid_height: i32 = 0;
+
+    for h in visited.iter() {
+        let x = h.0;
+        let y = h.1;
+        grid_width = if x > grid_width {x} else {grid_width};
+        grid_height = if y > grid_height {y} else {grid_height};
+    }
+
+    // Match the padding from the example
+    grid_width += 2;
+    grid_height += 1;
+
+    println!("Grid Width: {}, Grid Height: {}", grid_width, grid_height);
+
+    //TODO: create a blank grid which is Vec<Vec<char>>
+    //   all rows will be "....." when rendered initially
+
+    let mut grid: Vec<Vec<char>> = Vec::new();
+    for _ in 0..grid_height {
+        let mut row: Vec<char> = Vec::new();
+        for _ in 0..grid_width {
+            row.push('.');
+        }
+        grid.push(row);
+    }
+
+    for row in grid.into_iter().rev() {
+        let s: String = row.into_iter().collect();
+        println!("{}", s);
+    }
+}
+
 fn main() {
     let puz: String = read_puzzle_input();
     // println!("{}", puz);
@@ -249,4 +284,5 @@ fn main() {
 
     let final_rope = take_steps(steps, rope);
     println!("Unique spots visited: {}", &final_rope.visited.len());
+    plot_grid(&final_rope.visited);
 }
