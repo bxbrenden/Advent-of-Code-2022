@@ -59,19 +59,21 @@ fn parse_steps(puz: &String) -> Vec<(char, i32)> {
     steps
 }
 
-fn take_steps(steps: Vec<(char, i32)>, rope: Rope) -> () {
+fn take_steps(steps: Vec<(char, i32)>, mut rope: Rope) -> () {
     for step in steps.iter() {
         // println!("{:?}", step.1);
+        let num_moves = step.1;
         match step.0 {
-            'U' => (),  // Up means tail.y increases
-            'L' => (),  // Left means tail.x decreases
-            'R' => (),  // Right means tail.x increases
-            'D' => (),  // Down means tail.y decreases
+            'U' => rope.head.y += num_moves,  // Up means head.y increases
+            'L' => rope.head.x -= num_moves,  // Left means head.x decreases
+            'R' => rope.head.x += num_moves,  // Right means head.x increases
+            'D' => rope.head.y -= num_moves,  // Down means head.y decreases
             _ => {
                 println!("Unexpected direction: {}", step.0);
                 break;
             }
         }
+        println!("{:?}", rope);
     }
 }
 
