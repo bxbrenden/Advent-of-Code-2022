@@ -132,66 +132,68 @@ fn manage_tail(rope: &mut Rope) {
         }
         // Case 5: Head is one space right (x+1) and two spaces up (y+2).
         // Move tail diagonally up and right (y+1) (x+1).
-        // .H
-        // ..
-        // T.
+        // .H      .H
+        // ..  ->  .T
+        // T.      ..
         else if head.x - tail.x == 1 && head.y - tail.y == 2 {
             tail.x += 1;
             tail.y += 1;
         }
         //Case 6: Head is two spaces right (x+2) and one space up (y+1).
         // Move tail diagonally up and right (y+1) (x+1)
-        // ..H
-        // T..
+        // ..H  ->  .TH
+        // T..      ...
         else if head.x - tail.x == 2 && head.y - tail.y == 1 {
             tail.x += 1;
             tail.y += 1;
         }
         // Case 7: Head is one space left (x-1) and two up (y+2)
         // Move tail diagonally up and left (y+1) (x+1)
-        // H.
-        // ..
-        // .T
+        // H.       H.
+        // ..   ->  T.
+        // .T       ..
         else if head.x - tail.x == -1 && head.y - tail.y == 2 {
             tail.x -= 1;
             tail.y += 1;
         }
         // Case 8: Head is two spaces left (x-2) and one up (y+1)
         // Move tail diagonally up and left (y+1) (x+1)
-        // H..
-        // ..T
+        // H..  ->  HT.
+        // ..T      ...
         else if head.x - tail.x == -2 && head.y - tail.y == 1 {
             tail.x -= 1;
             tail.y += 1;
         }
         // Case 9: Head is one space left (x-1) and two spaces down (y-2)
         // Move tail diagonally down and left (y-1) (x-1)
-        // .T
-        // ..
-        // H.
+        // .T        ..
+        // ..   ->   T.
+        // H.        H.
         else if head.x - tail.x == -1 && head.y - tail.y == -2 {
             tail.x -= 1;
             tail.y -= 1;
         }
         // Case 10: Head is two spaces left (x-2) and one space down (y-2)
         // Move tail diagonally down and left (y-1) (x-1)
+        // ..T   ->   ...
+        // H..        HT.
         else if head.x - tail.x == -2 && head.y - tail.y == -1 {
             tail.x -= 1;
             tail.y -= 1;
         }
         // Case 11: Head is one space right (x+1) and two spaces down (y-2)
         // Move tail diagonally down and right (y-1), (x+1)
-        // T.
-        // ..
-        // .H
+        // T.       ..
+        // ..  ->   .T
+        // .H       .H
         else if head.x - tail.x == 1 && head.y - tail.y == -2 {
             tail.x += 1;
             tail.y -= 1;
         }
         // Case 12: Head is two spaces right (x+2) and one space down (y-1)
         // Move tail diagonally down and right (y-1) (x+1)
-        // T..
-        // ..H
+        // T..  ->  ...
+        // ..H      .TH
         else if head.x - tail.x == 2 && head.y - tail.y == -1 {
             tail.x += 1;
             tail.y -= 1;
@@ -204,6 +206,9 @@ fn manage_tail(rope: &mut Rope) {
 
     rope.visited.insert((tail.x, tail.y));
     let t2 = touching(&rope.head, &rope.tail);
+    if t2 == false {
+        panic!("Fixing it didn't fix it");
+    }
     // println!("Touching? {}. {:?}, {:?}", t2, &rope.head, &rope.tail);
     plot_grid(&rope, false);
 }
