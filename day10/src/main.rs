@@ -16,7 +16,9 @@ fn read_puzzle_input() -> String {
 }
 
 fn show_status(cycle: &i32, x_reg: &i32) {
-    println!("Cycle: {}, X: {}", cycle, x_reg);
+    if (cycle + 20) % 40 == 0 {
+        println!("Cycle: {}, X: {}", cycle, x_reg);
+    }
 }
 
 fn parse_instrs(puz: &String) -> () {
@@ -25,7 +27,6 @@ fn parse_instrs(puz: &String) -> () {
     let mut x_reg: i32 = 1;
     show_status(&cycle, &x_reg);
     for inst in instrs {
-        //show_status(&cycle, &x_reg);
         match inst {
             "noop" => {
                 cycle += 1;
