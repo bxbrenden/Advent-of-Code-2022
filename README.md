@@ -17,3 +17,5 @@ The crab means I solved it in Rust, and a snake means I gave up on Rust and solv
 - [x] Day 06 🦀🦀
 - [x] Day 07 🐍🐍
 - [x] Day 08 🦀🦀
+- [ ] Day 09
+- [x] Day 10 🦀
