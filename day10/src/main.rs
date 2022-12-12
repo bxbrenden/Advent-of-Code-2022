@@ -15,14 +15,22 @@ fn read_puzzle_input() -> String {
     puz
 }
 
-fn show_status(cycle: &i32, x_reg: &i32) {
+fn show_status(cycle: &i32, x_reg: &i32) -> bool {
     if (cycle + 20) % 40 == 0 {
         println!("Cycle: {}, X: {}", cycle, x_reg);
+        return true;
     }
+    false
 }
 
-fn parse_instrs(puz: &String) -> () {
+fn accumulate(cycle: &i32, x_reg: &i32, signal: &mut i32) {
+    *signal += cycle * x_reg;
+    println!("{} * {} = {}", cycle, x_reg, signal);
+}
+
+fn parse_instrs(puz: &String) -> i32 {
     let instrs = puz.trim().split("\n");
+    let mut signal: i32 = 0;
     let mut cycle: i32 = 1;
     let mut x_reg: i32 = 1;
     show_status(&cycle, &x_reg);
@@ -34,18 +42,24 @@ fn parse_instrs(puz: &String) -> () {
             _ => {
                 let num: i32 = inst.replace("addx ", "").parse().unwrap();
                 cycle += 1;
-                show_status(&cycle, &x_reg);
+                if show_status(&cycle, &x_reg) {
+                    accumulate(&cycle, &x_reg, &mut signal);
+                };
                 x_reg += num;
                 cycle += 1;
             }
         }
-        show_status(&cycle, &x_reg);
+        if show_status(&cycle, &x_reg) {
+            accumulate(&cycle, &x_reg, &mut signal);
+        }
     }
+    signal
 }
 
 fn main() {
     let puz: String = read_puzzle_input();
     //println!("{}", puz);
 
-    parse_instrs(&puz);
+    let signal_total: i32 = parse_instrs(&puz);
+    println!("Total: {}", signal_total);
 }
